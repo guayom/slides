@@ -4,10 +4,11 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "@mdx-deck/themes": "^3.0.8",
-    "mdx-deck": "^3.0.13"
+    "@mdx-deck/themes": "^3.0.8"
   },
-  "devDependencies": {},
+  "devDependencies": {
+      "mdx-deck": "^3.0.13"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "mdx-deck gridsome.mdx"
