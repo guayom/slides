@@ -1,0 +1,17 @@
+{
+  "name": "guayom-slides",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@mdx-deck/themes": "^3.0.8",
+    "mdx-deck": "^3.0.13"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "mdx-deck gridsome.mdx"
+  },
+  "author": "Guayo Mena",
+  "license": "ISC"
+}
