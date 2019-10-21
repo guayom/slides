@@ -1,5 +1,7 @@
-import { future } from '@mdx-deck/themes'
-export const theme = future
+import { CodeSurfer } from "mdx-deck-code-surfer";
+import { Appear } from "mdx-deck";
+ export { hack as theme } from 'mdx-deck/themes';
+
 
 ![](https://res.cloudinary.com/guayo/image/upload/v1571662636/slides/gridsome-logo.svg)
 # ¿Gridsome?
@@ -7,7 +9,9 @@ export const theme = future
 ---
 
 # Guayo Mena
+<Appear>
 Front end developer @ Parsley Health, NYC
+</Appear>
 
 ---
 
@@ -19,8 +23,15 @@ Front end developer @ Parsley Health, NYC
 
 ---
 
-# Como crear páginas con esos datos
-
+<CodeSurfer
+  code={require("raw-loader!./snippets/create-pages.js")}
+  title="Crear páginas"
+  steps={[
+    { lines: [ 4 ], notes: "Line" },
+    { range: [ 5, 6 ], notes: "Range" },
+    { range: [ 7, 8 ], notes: "Range" }
+  ]}
+/>
 ---
 
 # Gracias
