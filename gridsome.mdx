@@ -1,7 +1,10 @@
-import { CodeSurfer } from "mdx-deck-code-surfer";
-import { Appear } from "mdx-deck";
-export { hack as theme } from "mdx-deck/themes";
 import Iframe from "./components/Iframe"
+import {
+  CodeSurfer,
+  CodeSurferColumns,
+  Step,
+} from "code-surfer";
+import { github, vsDark } from "@code-surfer/themes";
 
 ![](https://res.cloudinary.com/guayo/image/upload/v1571662636/slides/gridsome-logo.svg)
 
@@ -33,58 +36,218 @@ bit.ly/reactcr
 
 # Tronald Dump
 
-<Appear>Not a typo!!!</Appear>
-
 ---
 
 ![](https://res.cloudinary.com/guayo/image/upload/v1572100294/slides/SHOW-ME-THE-CODE-.jpg)
 
 ---
 
-<CodeSurfer
-  code={require("raw-loader!./snippets/install-gridsome")}
-  title="Crear páginas"
-  steps={[
-    { lines: [1], notes: "Instalar gridsome" },
-    { lines: [2], notes: "Generater sitio" },
-    { lines: [3], notes: "Ir al folder del sitio" },
-    { lines: [4], notes: "Iniciar el servidor local" },
-    { lines: [5], notes: "Ver el sitio en el browser" }
-  ]}
-/>
+<CodeSurfer>
+
+```bash title="Instalar gridsome"
+yarn global add @gridsome/cli
+```
+
+```bash title="Crear el proyecto"
+yarn global add @gridsome/cli
+gridsome create tronald-dump
+```
+
+```bash title="Pasarse al directorio"
+yarn global add @gridsome/cli
+gridsome create tronald-dump
+cd tronald-dump
+```
+
+```bash title="Iniciar el server"
+yarn global add @gridsome/cli
+gridsome create tronald-dump
+cd tronald-dump
+gridsome develop
+```
+
+```bash title="Admirar en el browser"
+yarn global add @gridsome/cli
+gridsome create tronald-dump
+cd tronald-dump
+gridsome develop
+http://localhost:8080
+```
+</CodeSurfer>
 
 ---
 
-<CodeSurfer
-  code={require("raw-loader!./snippets/create-pages")}
-  title="gridsome.server.js"
-  steps={[
-    { range: [1, 2], notes: "Cargar datos desde una fuente" },
-    { range: [3, 4], notes: "Crear 2 colecciones" },
-    { range: [6, 13], notes: "Por cada tag, agregar un elemento a tagsCollection" },
-    { range: [14, 26], notes: "Por cada quote, agregar un elemento a quotesCollection" }
-  ]}
-/>
+<CodeSurfer>
+
+```js title="Importar data"
+module.exports = function(api) {
+  api.loadSource(async actions => {
+    const tagsCollection = actions.addCollection("Tag");
+    const quotesCollection = actions.addCollection("Quote");
+
+    const { data } = await axios.get(`https://api.tronalddump.io/tag`);
+    const tags = data._embedded;
+
+    for (const tag of tags) {
+      tagsCollection.addNode({
+        id: slugify(tag),
+        title: tag
+      });
+      const tagUrl = `https://api.tronalddump.io/tag/${encodeURI(tag)}`;
+      const { data } = await axios.get(tagUrl);
+      const quotes = data._embedded.tags;
+
+      for (const quote of quotes) {
+        quotesCollection.addNode({
+          tag: tag,
+          appeared_at: quote.appeared_at,
+          created_at: quote.created_at,
+          quote_id: quote.quote_id,
+          updated_at: quote.updated_at,
+          value: quote.value
+        });
+      }
+    }
+  });
+};
+```
+
+```js title="Importar data" subtitle="Crear colecciones"
+module.exports = function(api) {
+  api.loadSource(async actions => {
+    const tagsCollection = actions.addCollection("Tag");
+    const quotesCollection = actions.addCollection("Quote");
+```
+
+```js title="Importar data" subtitle="Alimentar colecciones"
+module.exports = function(api) {
+  api.loadSource(async actions => {
+    const tagsCollection = actions.addCollection("Tag");
+    const quotesCollection = actions.addCollection("Quote");
+
+    const { data } = await axios.get(`https://api.tronalddump.io/tag`);
+    const tags = data._embedded;
+
+    for (const tag of tags) {
+      tagsCollection.addNode({
+        id: slugify(tag),
+        title: tag
+      });
+      const tagUrl = `https://api.tronalddump.io/tag/${encodeURI(tag)}`;
+      const { data } = await axios.get(tagUrl);
+      const quotes = data._embedded.tags;
+
+      for (const quote of quotes) {
+        quotesCollection.addNode({
+          tag: tag,
+          appeared_at: quote.appeared_at,
+          created_at: quote.created_at,
+          quote_id: quote.quote_id,
+          updated_at: quote.updated_at,
+          value: quote.value
+        });
+      }
+    }
+```
+
+</CodeSurfer>
+
 ---
 
-<CodeSurfer
-  code={require("raw-loader!./snippets/gridsome-config")}
-  title="gridsome.config.js"
-  steps={[
-    { range: [1, 7] },
-    { range: [4, 6], notes: "La magia" },
-  ]}
-/>
+<CodeSurfer>
+
+```js title="Crear páginas"
+module.exports = {
+  siteName: "Tronald Dump",
+  plugins: [],
+  templates: {
+    Tag: "/:id"
+  }
+};
+```
+
+```js title="Crear páginas" subtitle="La magia"
+  templates: {
+    Tag: "/:id"
+  }
+```
+
+</CodeSurfer>
+
 ---
 
-<CodeSurfer
-  code={require("raw-loader!./snippets/gridsome-template")}
-  title="src/templates/Tag.vue"
-  steps={[
-    { range: [13, 30], notes: "Buscar la data" },
-    { range: [1, 11], notes: "Crear el template" },
-  ]}
-/>
+<CodeSurfer>
+
+```js title="Template" subtitle="/src/templates/Tag"
+<template>
+  <Layout>
+    <h1 v-html="$page.tag.title" />
+    <ul v-for="edge in $page.quotes.edges" :key="edge.node.id">
+      <li>
+        <small>{{ edge.node.created_at }}</small>
+        <h2>{{ edge.node.value }}</h2>
+      </li>
+    </ul>
+  </Layout>
+</template>
+
+<page-query>
+query ($id: ID!, $title: String! ){
+  tag(id: $id) {
+    title
+    id
+  }
+  quotes: allQuote(filter: {tag: {eq: $title}}) {
+    edges {
+      node {
+        tag
+        id
+        value
+        created_at
+      }
+    }
+  }
+}
+</page-query>
+```
+
+```js title="Template" subtitle="Query"
+<page-query>
+query ($id: ID!, $title: String! ){
+  tag(id: $id) {
+    title
+    id
+  }
+  quotes: allQuote(filter: {tag: {eq: $title}}) {
+    edges {
+      node {
+        tag
+        id
+        value
+        created_at
+      }
+    }
+  }
+}
+</page-query>
+```
+
+```js title="Template" subtitle="Markup"
+<template>
+  <Layout>
+    <h1 v-html="$page.tag.title" />
+    <ul v-for="edge in $page.quotes.edges" :key="edge.node.id">
+      <li>
+        <small>{{ edge.node.created_at }}</small>
+        <h2>{{ edge.node.value }}</h2>
+      </li>
+    </ul>
+  </Layout>
+</template>
+```
+
+</CodeSurfer>
+
 ---
 
 <Iframe src="https://agitated-benz-2862dd.netlify.com/" />
@@ -97,6 +260,4 @@ bit.ly/reactcr
 
 ![](https://res.cloudinary.com/guayo/image/upload/v1572109544/slides/netlify-logo.png)
 
----
 
-# Gracias
