@@ -1,0 +1,5 @@
+yarn global add @gridsome/cli
+gridsome create tronald-dump
+cd tronald-dump
+gridsome develop
+http://localhost:8080

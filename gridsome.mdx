@@ -1,39 +1,102 @@
 import { CodeSurfer } from "mdx-deck-code-surfer";
 import { Appear } from "mdx-deck";
- export { hack as theme } from 'mdx-deck/themes';
-
+export { hack as theme } from "mdx-deck/themes";
+import Iframe from "./components/Iframe"
 
 ![](https://res.cloudinary.com/guayo/image/upload/v1571662636/slides/gridsome-logo.svg)
+
 # ¿Gridsome?
 
 ---
 
 # Guayo Mena
-<Appear>
+
 Front end developer @ Parsley Health, NYC
-</Appear>
+bit.ly/reactcr
 
 ---
 
 # Qué es Gridsome
 
+- Genera sitios estáticos
+- Trae tus datos de cualquier lado
+- API para generar páginas programáticamente o por files
+- GraphQL, capa de datos centralizada
+- Code spliting automático
+- Eco-sistema de plugins
+
 ---
 
-# Cómo obtener datos
+![](https://assets.tronalddump.io/img/tronalddump_850x850.png)
+
+---
+
+# Tronald Dump
+
+<Appear>Not a typo!!!</Appear>
+
+---
+
+![](https://res.cloudinary.com/guayo/image/upload/v1572100294/slides/SHOW-ME-THE-CODE-.jpg)
 
 ---
 
 <CodeSurfer
-  code={require("raw-loader!./snippets/create-pages.js")}
+  code={require("raw-loader!./snippets/install-gridsome")}
   title="Crear páginas"
   steps={[
-    { lines: [ 4 ], notes: "Line" },
-    { range: [ 5, 6 ], notes: "Range" },
-    { range: [ 7, 8 ], notes: "Range" }
+    { lines: [1], notes: "Instalar gridsome" },
+    { lines: [2], notes: "Generater sitio" },
+    { lines: [3], notes: "Ir al folder del sitio" },
+    { lines: [4], notes: "Iniciar el servidor local" },
+    { lines: [5], notes: "Ver el sitio en el browser" }
+  ]}
+/>
+
+---
+
+<CodeSurfer
+  code={require("raw-loader!./snippets/create-pages")}
+  title="gridsome.server.js"
+  steps={[
+    { range: [1, 2], notes: "Cargar datos desde una fuente" },
+    { range: [3, 4], notes: "Crear 2 colecciones" },
+    { range: [6, 13], notes: "Por cada tag, agregar un elemento a tagsCollection" },
+    { range: [14, 26], notes: "Por cada quote, agregar un elemento a quotesCollection" }
   ]}
 />
 ---
 
-# Gracias
+<CodeSurfer
+  code={require("raw-loader!./snippets/gridsome-config")}
+  title="gridsome.config.js"
+  steps={[
+    { range: [1, 7] },
+    { range: [4, 6], notes: "La magia" },
+  ]}
+/>
+---
+
+<CodeSurfer
+  code={require("raw-loader!./snippets/gridsome-template")}
+  title="src/templates/Tag.vue"
+  steps={[
+    { range: [13, 30], notes: "Buscar la data" },
+    { range: [1, 11], notes: "Crear el template" },
+  ]}
+/>
+---
+
+<Iframe src="https://agitated-benz-2862dd.netlify.com/" />
 
 ---
+
+< 60 líneas de código = 56 páginas
+
+---
+
+![](https://res.cloudinary.com/guayo/image/upload/v1572109544/slides/netlify-logo.png)
+
+---
+
+# Gracias
